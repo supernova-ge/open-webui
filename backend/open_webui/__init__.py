@@ -14,7 +14,7 @@ KEY_FILE = Path.cwd() / ".webui_secret_key"
 @app.command()
 def serve(
     host: str = "0.0.0.0",
-    port: int = 8080,
+    port: int = 5000,
 ):
     os.environ["FROM_INIT_PY"] = "true"
     if os.getenv("WEBUI_SECRET_KEY") is None:
@@ -61,7 +61,7 @@ def serve(
 @app.command()
 def dev(
     host: str = "0.0.0.0",
-    port: int = 8080,
+    port: int = 5000,
     reload: bool = True,
 ):
     uvicorn.run(
