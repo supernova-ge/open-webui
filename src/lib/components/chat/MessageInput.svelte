@@ -526,7 +526,7 @@
 									<div
 										bind:this={chatInputContainerElement}
 										id="chat-input-container"
-										class="scrollbar-hidden text-left bg-gray-50 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-2.5 px-1 rounded-3xl resize-none h-[48px] overflow-auto"
+										class="scrollbar-hidden text-left bg-gray-50 dark:bg-gray-850 dark:text-gray-100 outline-none w-full py-2.5 px-1 rounded-xl resize-none h-[48px] overflow-auto"
 									>
 										<RichTextInput
 											bind:this={chatInputElement}
@@ -864,7 +864,62 @@
 										}}
 									/>
 								{/if}
+
+								<div class="self-end mb-2 flex space-x-1 mr-1"></div>
 							</div>
+						</div>
+						<div class="flex items-end w-10">
+							{#if !history.currentId || history.messages[history.currentId]?.done == true}
+								<div class=" flex items-center mb-1">
+									<Tooltip content={$i18n.t('Send message')}>
+										<button
+											id="send-message-button"
+											class="{prompt !== ''
+												? 'bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100 '
+												: 'text-white bg-gray-200 dark:text-gray-900 dark:bg-gray-700 disabled'} transition rounded-full p-1.5 m-0.5 self-center"
+											type="submit"
+											disabled={prompt === ''}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												viewBox="0 0 16 16"
+												fill="currentColor"
+												class="size-6"
+											>
+												<path
+													fill-rule="evenodd"
+													d="M8 14a.75.75 0 0 1-.75-.75V4.56L4.03 7.78a.75.75 0 0 1-1.06-1.06l4.5-4.5a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.75 4.56v8.69A.75.75 0 0 1 8 14Z"
+													clip-rule="evenodd"
+												/>
+											</svg>
+										</button>
+									</Tooltip>
+								</div>
+							{:else}
+								<div class=" flex items-center mb-1.5">
+									<Tooltip content={$i18n.t('Stop')}>
+										<button
+											class="bg-white hover:bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-800 transition rounded-full p-1.5"
+											on:click={() => {
+												stopResponse();
+											}}
+										>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												viewBox="0 0 24 24"
+												fill="currentColor"
+												class="size-6"
+											>
+												<path
+													fill-rule="evenodd"
+													d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm6-2.438c0-.724.588-1.312 1.313-1.312h4.874c.725 0 1.313.588 1.313 1.313v4.874c0 .725-.588 1.313-1.313 1.313H9.564a1.312 1.312 0 01-1.313-1.313V9.564z"
+													clip-rule="evenodd"
+												/>
+											</svg>
+										</button>
+									</Tooltip>
+								</div>
+							{/if}
 						</div>
 					</form>
 				{/if}
