@@ -7,7 +7,6 @@
 	import { mobile, showControls, showCallOverlay, showOverview, showArtifacts } from '$lib/stores';
 
 	import Modal from '../common/Modal.svelte';
-	import Controls from './Controls/Controls.svelte';
 	import CallOverlay from './MessageInput/CallOverlay.svelte';
 	import Drawer from '../common/Drawer.svelte';
 	import Overview from './Overview.svelte';
@@ -167,7 +166,7 @@
 						</div>
 					{:else if $showArtifacts}
 						<Artifacts {history} />
-					{:else if $showOverview}
+					{:else}
 						<Overview
 							{history}
 							on:nodeclick={(e) => {
@@ -176,15 +175,6 @@
 							on:close={() => {
 								showControls.set(false);
 							}}
-						/>
-					{:else}
-						<Controls
-							on:close={() => {
-								showControls.set(false);
-							}}
-							{models}
-							bind:chatFiles
-							bind:params
 						/>
 					{/if}
 				</div>
@@ -248,7 +238,7 @@
 							</div>
 						{:else if $showArtifacts}
 							<Artifacts {history} overlay={dragged} />
-						{:else if $showOverview}
+						{:else}
 							<Overview
 								{history}
 								on:nodeclick={(e) => {
@@ -263,15 +253,6 @@
 								on:close={() => {
 									showControls.set(false);
 								}}
-							/>
-						{:else}
-							<Controls
-								on:close={() => {
-									showControls.set(false);
-								}}
-								{models}
-								bind:chatFiles
-								bind:params
 							/>
 						{/if}
 					</div>
