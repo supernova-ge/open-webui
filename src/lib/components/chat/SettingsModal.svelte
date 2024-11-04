@@ -114,7 +114,6 @@
 			</div>
 			<div class="flex-1">
 				<General
-					{getModels}
 					{saveSettings}
 					on:save={() => {
 						toast.success($i18n.t('Settings saved successfully!'));

@@ -10,7 +10,6 @@
 
 	export let open = true;
 
-	export let id = '';
 	export let name = '';
 	export let collapsible = true;
 

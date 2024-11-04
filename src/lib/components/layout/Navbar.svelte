@@ -29,12 +29,9 @@
 	const i18n = getContext('i18n');
 
 	export let initNewChat: Function;
-	export let title: string = $WEBUI_NAME;
 	export let shareEnabled: boolean = false;
 
 	export let chat;
-	export let selectedModels;
-	export let showModelSelector = true;
 
 	let showShareChatModal = false;
 	let showDownloadChatModal = false;
@@ -75,12 +72,8 @@
 				{#if shareEnabled && chat && (chat.id || $temporaryChatEnabled)}
 					<Menu
 						{chat}
-						{shareEnabled}
 						shareHandler={() => {
 							showShareChatModal = !showShareChatModal;
-						}}
-						downloadHandler={() => {
-							showDownloadChatModal = !showDownloadChatModal;
 						}}
 					>
 						<button
@@ -139,7 +132,6 @@
 				{#if $user !== undefined}
 					<UserMenu
 						className="max-w-[200px]"
-						role={$user.role}
 						on:show={(e) => {
 							if (e.detail === 'archived-chat') {
 								showArchivedChats.set(true);

@@ -25,7 +25,6 @@
 
 	export let editMessage;
 	export let deleteMessage;
-	export let rateMessage;
 
 	export let regenerateResponse;
 	export let continueResponse;
@@ -33,7 +32,6 @@
 	// MultiResponseMessages
 	export let mergeResponses;
 
-	export let autoScroll = false;
 	export let readOnly = false;
 
 	onMount(() => {
@@ -74,7 +72,6 @@
 				{showPreviousMessage}
 				{showNextMessage}
 				{editMessage}
-				{rateMessage}
 				{continueResponse}
 				{regenerateResponse}
 				on:submit={async (e) => {
@@ -105,7 +102,6 @@
 				{chatId}
 				{messageId}
 				isLastMessage={messageId === history?.currentId}
-				{rateMessage}
 				{editMessage}
 				{continueResponse}
 				{regenerateResponse}

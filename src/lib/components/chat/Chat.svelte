@@ -2093,8 +2093,6 @@
 	</title>
 </svelte:head>
 
-<audio id="audioElement" src="" style="display: none;" />
-
 <EventConfirmDialog
 	bind:show={showEventConfirmation}
 	title={eventConfirmationTitle}
@@ -2147,8 +2145,6 @@
 					timestamp: Date.now()
 				}
 			}}
-			title={$chatTitle}
-			bind:selectedModels
 			shareEnabled={!!history.currentId}
 			{initNewChat}
 		/>
@@ -2329,12 +2325,8 @@
 			<ChatControls
 				bind:this={controlPaneComponent}
 				bind:history
-				bind:chatFiles
-				bind:params
-				bind:files
 				bind:pane={controlPane}
 				chatId={$chatId}
-				modelId={selectedModelIds?.at(0) ?? null}
 				models={selectedModelIds.reduce((a, e, i, arr) => {
 					const model = $models.find((m) => m.id === e);
 					if (model) {
@@ -2342,10 +2334,7 @@
 					}
 					return a;
 				}, [])}
-				{submitPrompt}
-				{stopResponse}
 				{showMessage}
-				{eventTarget}
 			/>
 		</PaneGroup>
 	</div>

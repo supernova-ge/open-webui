@@ -7,7 +7,6 @@
 	import { mobile, showControls, showCallOverlay, showOverview, showArtifacts } from '$lib/stores';
 
 	import Modal from '../common/Modal.svelte';
-	import CallOverlay from './MessageInput/CallOverlay.svelte';
 	import Drawer from '../common/Drawer.svelte';
 	import Overview from './Overview.svelte';
 	import EllipsisVertical from '../icons/EllipsisVertical.svelte';
@@ -15,19 +14,10 @@
 	import { min } from '@floating-ui/utils';
 
 	export let history;
-	export let models = [];
 
 	export let chatId = null;
 
-	export let chatFiles = [];
-	export let params = {};
-
-	export let eventTarget: EventTarget;
-	export let submitPrompt: Function;
-	export let stopResponse: Function;
 	export let showMessage: Function;
-	export let files;
-	export let modelId;
 
 	export let pane;
 
@@ -148,23 +138,7 @@
 						? ' h-screen  w-screen'
 						: 'px-6 py-4'} h-full"
 				>
-					{#if $showCallOverlay}
-						<div
-							class=" h-full max-h-[100dvh] bg-white text-gray-700 dark:bg-black dark:text-gray-300 flex justify-center"
-						>
-							<CallOverlay
-								bind:files
-								{submitPrompt}
-								{stopResponse}
-								{modelId}
-								{chatId}
-								{eventTarget}
-								on:close={() => {
-									showControls.set(false);
-								}}
-							/>
-						</div>
-					{:else if $showArtifacts}
+					{#if $showArtifacts}
 						<Artifacts {history} />
 					{:else}
 						<Overview
@@ -222,21 +196,7 @@
 							? ' '
 							: 'px-4 py-4 bg-white dark:shadow-lg dark:bg-gray-850  border border-gray-50 dark:border-gray-850'}  rounded-xl z-40 pointer-events-auto overflow-y-auto scrollbar-hidden"
 					>
-						{#if $showCallOverlay}
-							<div class="w-full h-full flex justify-center">
-								<CallOverlay
-									bind:files
-									{submitPrompt}
-									{stopResponse}
-									{modelId}
-									{chatId}
-									{eventTarget}
-									on:close={() => {
-										showControls.set(false);
-									}}
-								/>
-							</div>
-						{:else if $showArtifacts}
+						{#if $showArtifacts}
 							<Artifacts {history} overlay={dragged} />
 						{:else}
 							<Overview
