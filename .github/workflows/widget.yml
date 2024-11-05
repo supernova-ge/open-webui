@@ -11,6 +11,7 @@ env:
   ECS_SERVICE: widget-${{ vars.APP_ENV }}
   ECS_CLUSTER: tiny-llm-course
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 permissions:
   id-token: write
