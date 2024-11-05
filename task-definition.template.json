@@ -51,8 +51,8 @@
 					"value": "false"
 				}
 			],
-			"memory": 256,
-			"cpu": 512,
+			"memory": 904,
+			"cpu": 2048,
 			"logConfiguration": {
 				"logDriver": "awslogs",
 				"options": {
