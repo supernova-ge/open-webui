@@ -1,0 +1,59 @@
+{
+	"family": "widget-$APP_ENV",
+	"taskRoleArn": "arn:aws:iam::891377043594:role/ecsTaskRole",
+	"executionRoleArn": "arn:aws:iam::891377043594:role/ecsTaskExecutionRole",
+	"requiresCompatibilities": [
+		"EC2"
+	],
+	"containerDefinitions": [
+		{
+			"name": "widget-$APP_ENV",
+			"image": "339713182600.dkr.ecr.eu-west-1.amazonaws.com/widget-$APP_ENV:$IMAGE_TAG",
+			"essential": true,
+			"portMappings": [
+				{
+					"containerPort": 8080,
+					"hostPort": 8080,
+					"protocol": "tcp"
+				}
+			],
+			"environment": [
+				{
+					"name": "OPENAI_API_BASE_URL",
+					"value": "https://api.openai.com/v1"
+				},
+				{
+					"name": "OPENAI_API_KEY",
+					"value": "$OPENAI_API_KEY"
+				},
+				{
+					"name": "ENABLE_OLLAMA_API",
+					"value": "false"
+				},
+				{
+					"name": "SCARF_NO_ANALYTICS",
+					"value": "true"
+				},
+				{
+					"name": "DO_NOT_TRACK",
+					"value": "true"
+				},
+				{
+					"name": "ANONYMIZED_TELEMETRY",
+					"value": "false"
+				}
+			],
+			"memory": 256,
+			"cpu": 512,
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"awslogs-group": "/ecs/tiny-llm-course-widget-$APP_ENV",
+					"awslogs-create-group": "true",
+					"awslogs-region": "eu-west-1",
+					"awslogs-stream-prefix": "ecs"
+				}
+			}
+		}
+	]
+}
