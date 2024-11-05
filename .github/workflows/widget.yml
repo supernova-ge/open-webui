@@ -5,10 +5,10 @@ on:
     branches: ["widget-dev"]
 
 env:
-  APP_ENV: ${{ env.APP_ENV }}
+  APP_ENV: ${{ vars.APP_ENV }}
   AWS_REGION: eu-west-1
-  ECR_REPOSITORY: tiny-llm-course-widget-${{ env.APP_ENV }}
-  ECS_SERVICE: widget-${{ env.APP_ENV }}
+  ECR_REPOSITORY: tiny-llm-course-widget-${{ vars.APP_ENV }}
+  ECS_SERVICE: widget-${{ vars.APP_ENV }}
   ECS_CLUSTER: tiny-llm-course
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
