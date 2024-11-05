@@ -29,6 +29,7 @@ jobs:
 
       - name: Substitute environment variables
         run: |
+          envsubst < .env.example > .env
           envsubst < task-definition.template.json > task-definition.json
 
       - name: Configure AWS credentials

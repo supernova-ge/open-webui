@@ -17,40 +17,6 @@
 					"protocol": "tcp"
 				}
 			],
-			"environment": [
-				{
-					"name": "DATABASE_URL",
-					"value": "$DATABASE_URL"
-				},
-				{
-					"name": "DATABASE_POOL_SIZE",
-					"value": "5"
-				},
-				{
-					"name": "OPENAI_API_BASE_URL",
-					"value": "https://api.openai.com/v1"
-				},
-				{
-					"name": "OPENAI_API_KEY",
-					"value": "$OPENAI_API_KEY"
-				},
-				{
-					"name": "ENABLE_OLLAMA_API",
-					"value": "false"
-				},
-				{
-					"name": "SCARF_NO_ANALYTICS",
-					"value": "true"
-				},
-				{
-					"name": "DO_NOT_TRACK",
-					"value": "true"
-				},
-				{
-					"name": "ANONYMIZED_TELEMETRY",
-					"value": "false"
-				}
-			],
 			"memory": 904,
 			"cpu": 2048,
 			"logConfiguration": {
