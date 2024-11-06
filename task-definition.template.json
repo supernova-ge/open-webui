@@ -24,7 +24,7 @@
 				},
 				{
 					"name": "DATABASE_POOL_SIZE",
-					"value": 5
+					"value": "5"
 				},
 				{
 					"name": "ENABLE_OLLAMA_API",
