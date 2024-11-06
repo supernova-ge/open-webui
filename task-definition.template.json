@@ -17,18 +17,6 @@
 					"protocol": "tcp"
 				}
 			],
-			"extraHosts": [
-				{
-					"hostname": "host.docker.internal",
-					"ipAddress": "host-gateway"
-				}
-			],
-			"mountPoints": [
-				{
-					"sourceVolume": "app-backend-data",
-					"containerPath": "/app/backend/data"
-				}
-			],
 			"environment": [
 				{
 					"name": "DATABASE_URL",
@@ -73,14 +61,6 @@
 					"awslogs-region": "eu-west-1",
 					"awslogs-stream-prefix": "ecs"
 				}
-			}
-		}
-	],
-	"volumes": [
-		{
-			"name": "app-backend-data",
-			"host": {
-				"sourcePath": "widget-$APP_ENV:$IMAGE_TAG"
 			}
 		}
 	]
