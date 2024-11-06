@@ -5,7 +5,7 @@ cd "$SCRIPT_DIR" || exit
 
 KEY_FILE=.webui_secret_key
 
-PORT="${PORT:-8080}"
+PORT="${PORT:-3000}"
 HOST="${HOST:-0.0.0.0}"
 
 DATABASE_POOL_SIZE=5
