@@ -23,36 +23,12 @@
 					"value": "$DATABASE_URL"
 				},
 				{
-					"name": "DATABASE_POOL_SIZE",
-					"value": "5"
-				},
-				{
-					"name": "ENABLE_OLLAMA_API",
-					"value": false
-				},
-				{
-					"name": "ENABLE_OPENAI_API",
-					"value": true
-				},
-				{
 					"name": "OPENAI_API_BASE_URL",
 					"value": "https://api.openai.com/v1"
 				},
 				{
 					"name": "OPENAI_API_KEY",
 					"value": "$OPENAI_API_KEY"
-				},
-				{
-					"name": "SCARF_NO_ANALYTICS",
-					"value": true
-				},
-				{
-					"name": "DO_NOT_TRACK",
-					"value": true
-				},
-				{
-					"name": "ANONYMIZED_TELEMETRY",
-					"value": false
 				}
 			],
 			"memory": 904,
