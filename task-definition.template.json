@@ -24,7 +24,15 @@
 				},
 				{
 					"name": "DATABASE_POOL_SIZE",
-					"value": "5"
+					"value": 5
+				},
+				{
+					"name": "ENABLE_OLLAMA_API",
+					"value": false
+				},
+				{
+					"name": "ENABLE_OPENAI_API",
+					"value": true
 				},
 				{
 					"name": "OPENAI_API_BASE_URL",
@@ -35,20 +43,16 @@
 					"value": "$OPENAI_API_KEY"
 				},
 				{
-					"name": "ENABLE_OLLAMA_API",
-					"value": "false"
-				},
-				{
 					"name": "SCARF_NO_ANALYTICS",
-					"value": "true"
+					"value": true
 				},
 				{
 					"name": "DO_NOT_TRACK",
-					"value": "true"
+					"value": true
 				},
 				{
 					"name": "ANONYMIZED_TELEMETRY",
-					"value": "false"
+					"value": false
 				}
 			],
 			"memory": 904,
