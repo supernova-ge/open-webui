@@ -80,7 +80,7 @@
 		{
 			"name": "app-backend-data",
 			"host": {
-				"sourcePath": "widget-$APP_ENV"
+				"sourcePath": "widget-$APP_ENV:$IMAGE_TAG"
 			}
 		}
 	]
