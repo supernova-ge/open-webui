@@ -15,7 +15,6 @@
 	} from '$lib/stores';
 
 	import { slide } from 'svelte/transition';
-	import ShareChatModal from '../chat/ShareChatModal.svelte';
 	import ModelSelector from '../chat/ModelSelector.svelte';
 	import Tooltip from '../common/Tooltip.svelte';
 	import Menu from './Navbar/Menu.svelte';
@@ -29,15 +28,9 @@
 	const i18n = getContext('i18n');
 
 	export let initNewChat: Function;
-	export let shareEnabled: boolean = false;
 
 	export let chat;
-
-	let showShareChatModal = false;
-	let showDownloadChatModal = false;
 </script>
-
-<ShareChatModal bind:show={showShareChatModal} chatId={$chatId} />
 
 <div class="sticky top-0 z-30 w-full px-1 py-2 -mb-8 flex items-center">
 	<div
@@ -69,13 +62,8 @@
 
 			<div class="self-start flex flex-none items-center text-gray-600 dark:text-gray-400">
 				<!-- <div class="md:hidden flex self-center w-[1px] h-5 mx-2 bg-gray-300 dark:bg-stone-700" /> -->
-				{#if shareEnabled && chat && (chat.id || $temporaryChatEnabled)}
-					<Menu
-						{chat}
-						shareHandler={() => {
-							showShareChatModal = !showShareChatModal;
-						}}
-					>
+				{#if chat && (chat.id || $temporaryChatEnabled)}
+					<Menu {chat}>
 						<button
 							class="flex cursor-pointer px-2 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-850 transition"
 							id="chat-context-menu-button"

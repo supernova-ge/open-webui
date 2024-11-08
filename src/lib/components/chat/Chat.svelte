@@ -2145,7 +2145,6 @@
 					timestamp: Date.now()
 				}
 			}}
-			shareEnabled={!!history.currentId}
 			{initNewChat}
 		/>
 
