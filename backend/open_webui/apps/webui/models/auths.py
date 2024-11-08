@@ -86,7 +86,7 @@ class SignupForm(BaseModel):
 
 
 class AddUserForm(SignupForm):
-    role: Optional[str] = "pending"
+    role: Optional[str] = "user"
 
 
 class AuthsTable:
@@ -96,7 +96,7 @@ class AuthsTable:
         password: str,
         name: str,
         profile_image_url: str = "/user.png",
-        role: str = "pending",
+        role: str = "user",
         oauth_sub: Optional[str] = None,
     ) -> Optional[UserModel]:
         with get_db() as db:

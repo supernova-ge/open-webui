@@ -724,7 +724,7 @@ DEFAULT_PROMPT_SUGGESTIONS = PersistentConfig(
 DEFAULT_USER_ROLE = PersistentConfig(
     "DEFAULT_USER_ROLE",
     "ui.default_user_role",
-    os.getenv("DEFAULT_USER_ROLE", "pending"),
+    "user",
 )
 
 USER_PERMISSIONS_CHAT_DELETION = (
