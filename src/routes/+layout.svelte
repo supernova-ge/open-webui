@@ -22,7 +22,7 @@
 	import { Toaster, toast } from 'svelte-sonner';
 
 	import { getBackendConfig } from '$lib/apis';
-	import { getSessionUser } from '$lib/apis/auths';
+	import { getSessionUser, userSignIn } from '$lib/apis/auths';
 
 	import '../tailwind.css';
 	import '../app.css';
@@ -37,6 +37,21 @@
 
 	let loaded = false;
 	const BREAKPOINT = 768;
+
+	const setSessionUser = async (sessionUser) => {
+		if (sessionUser) {
+			console.log(sessionUser);
+			toast.success($i18n.t(`You're now logged in.`));
+			if (sessionUser.token) {
+				localStorage.token = sessionUser.token;
+			}
+
+			$socket.emit('user-join', { auth: { token: sessionUser.token } });
+			await user.set(sessionUser);
+			await config.set(await getBackendConfig());
+			goto('/');
+		}
+	};
 
 	const setupSocket = () => {
 		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
@@ -142,14 +157,20 @@
 					} else {
 						// Redirect Invalid Session User to /auth Page
 						localStorage.removeItem('token');
-						await goto('/auth');
+						await goto('/error');
 					}
 				} else {
-					// Don't redirect if we're already on the auth page
-					// Needed because we pass in tokens from OAuth logins via URL fragments
-					if ($page.url.pathname !== '/auth') {
-						await goto('/auth');
-					}
+					const signInHandler = async (email, password) => {
+						const sessionUser = await userSignIn(email, password).catch((error) => {
+							toast.error(error);
+							return null;
+						});
+
+						await setSessionUser(sessionUser);
+					};
+					const email = $page.url.searchParams.get('email');
+					const password = $page.url.searchParams.get('password');
+					if (email && password) await signInHandler(email, password);
 				}
 			}
 		} else {
