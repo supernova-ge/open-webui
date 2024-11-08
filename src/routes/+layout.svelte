@@ -168,6 +168,7 @@
 
 						await setSessionUser(sessionUser);
 					};
+					// TODO: change email and pass to jwt ticket, secret
 					const email = $page.url.searchParams.get('email');
 					const password = $page.url.searchParams.get('password');
 					if (email && password) await signInHandler(email, password);
