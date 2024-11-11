@@ -31,6 +31,7 @@ from open_webui.utils.misc import parse_duration, validate_email_format
 from open_webui.utils.utils import (
     create_api_key,
     create_token,
+    decode_token,
     get_admin_user,
     get_verified_user,
     get_current_user,
@@ -144,8 +145,18 @@ async def update_password(
 
 @router.post("/signin", response_model=SessionUserResponse)
 async def signin(request: Request, response: Response, form_data: SigninForm):
+
+    email = form_data.email.lower()
+    password = form_data.password
+
+    ticket = request.headers.get("X-Auth-Ticket")
+    if ticket:
+        decoded_ticket = decode_token(ticket)
+        if decoded_ticket:
+            email = decoded_ticket.get("email")
+            password = decoded_ticket.get("password")
     
-    user = Auths.authenticate_user(form_data.email.lower(), form_data.password)
+    user = Auths.authenticate_user(email, password)
 
     if user:
 

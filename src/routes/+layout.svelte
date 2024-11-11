@@ -160,18 +160,19 @@
 						await goto('/error');
 					}
 				} else {
-					const signInHandler = async (email, password) => {
-						const sessionUser = await userSignIn(email, password).catch((error) => {
+					const signInHandler = async (ticket) => {
+						const sessionUser = await userSignIn('', '', ticket).catch((error) => {
 							toast.error(error);
 							return null;
 						});
 
 						await setSessionUser(sessionUser);
 					};
-					// TODO: change email and pass to jwt ticket, secret
-					const email = $page.url.searchParams.get('email');
-					const password = $page.url.searchParams.get('password');
-					if (email && password) await signInHandler(email, password);
+					const ticket = $page.url.searchParams.get('ticket');
+
+					if (ticket) {
+						await signInHandler(ticket);
+					}
 				}
 			}
 		} else {
