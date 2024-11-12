@@ -467,7 +467,7 @@ def get_model_path(model: str, update_model: bool = False):
 
 
 def generate_openai_batch_embeddings(
-    model: str, texts: list[str], key: str, url: str = "https://api.openai.com/v1"
+    model: str, texts: list[str], key: str, url: str = "https://api.ailab.ge"
 ) -> Optional[list[list[float]]]:
     try:
         r = requests.post(
@@ -506,7 +506,7 @@ def generate_embeddings(engine: str, model: str, text: Union[str, list[str]], **
         )
     elif engine == "openai":
         key = kwargs.get("key", "")
-        url = kwargs.get("url", "https://api.openai.com/v1")
+        url = kwargs.get("url", "https://api.ailab.ge")
 
         if isinstance(text, list):
             embeddings = generate_openai_batch_embeddings(model, text, key, url)

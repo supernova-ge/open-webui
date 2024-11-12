@@ -232,7 +232,7 @@ export const getOpenAIModels = async (token: string, urlIdx?: number) => {
 };
 
 export const getOpenAIModelsDirect = async (
-	base_url: string = 'https://api.openai.com/v1',
+	base_url: string = 'https://api.ailab.ge',
 	api_key: string = ''
 ) => {
 	let error = null;

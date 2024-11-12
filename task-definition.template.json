@@ -2,9 +2,7 @@
 	"family": "widget-$APP_ENV",
 	"taskRoleArn": "arn:aws:iam::891377043594:role/ecsTaskRole",
 	"executionRoleArn": "arn:aws:iam::891377043594:role/ecsTaskExecutionRole",
-	"requiresCompatibilities": [
-		"EC2"
-	],
+	"requiresCompatibilities": ["EC2"],
 	"containerDefinitions": [
 		{
 			"name": "widget-$APP_ENV",
@@ -24,7 +22,7 @@
 				},
 				{
 					"name": "OPENAI_API_BASE_URL",
-					"value": "https://api.openai.com/v1"
+					"value": "https://api.ailab.ge"
 				},
 				{
 					"name": "OPENAI_API_KEY",

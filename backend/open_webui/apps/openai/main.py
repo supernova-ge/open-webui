@@ -121,7 +121,7 @@ async def update_openai_key(form_data: KeysUpdateForm, user=Depends(get_admin_us
 async def speech(request: Request, user=Depends(get_verified_user)):
     idx = None
     try:
-        idx = app.state.config.OPENAI_API_BASE_URLS.index("https://api.openai.com/v1")
+        idx = app.state.config.OPENAI_API_BASE_URLS.index("https://api.ailab.ge")
         body = await request.body()
         name = hashlib.sha256(body).hexdigest()
 
