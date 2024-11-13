@@ -7,7 +7,7 @@ from open_webui.apps.webui.models.users import UserModel, Users
 from open_webui.env import SRC_LOG_LEVELS
 from pydantic import BaseModel
 from sqlalchemy import Boolean, Column, String, Text
-from open_webui.utils.utils import verify_password
+from open_webui.utils.utils import (verify_password, decode_token)
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MODELS"])
@@ -135,6 +135,16 @@ class AuthsTable:
                         return None
                 else:
                     return None
+        except Exception:
+            return None
+    
+    def decode_X_Auth_ticket(self, ticket: str) -> Optional[SigninForm]:
+        try:
+            decoded_ticket = decode_token(ticket)
+            email, password = decoded_ticket["email"], decoded_ticket["password"]
+            log.info(f"decoded_ticket email: {email}")
+            log.info(f"decoded_ticket password: {password}")
+            return SigninForm(email=email, password=password)
         except Exception:
             return None
 
