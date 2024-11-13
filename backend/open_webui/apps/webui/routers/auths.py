@@ -6,7 +6,7 @@ import logging
 from open_webui.env import SRC_LOG_LEVELS
 
 log = logging.getLogger(__name__)
-log.setLevel(SRC_LOG_LEVELS["ROUTERS"])
+log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
 from open_webui.apps.webui.models.auths import (
     AddUserForm,
