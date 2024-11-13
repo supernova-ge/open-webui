@@ -2,11 +2,6 @@ import re
 import uuid
 import time
 import datetime
-import logging
-from open_webui.env import SRC_LOG_LEVELS
-
-log = logging.getLogger(__name__)
-log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
 from open_webui.apps.webui.models.auths import (
     AddUserForm,
@@ -155,7 +150,6 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
     password = form_data.password
 
     ticket = request.headers.get("X-Auth-Ticket")
-    log.info(f"ticket: {ticket}")
     if ticket:
         signinForm = Auths.decode_X_Auth_ticket(ticket)
         if signinForm:

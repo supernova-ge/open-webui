@@ -142,8 +142,6 @@ class AuthsTable:
         try:
             decoded_ticket = decode_token(ticket)
             email, password = decoded_ticket["email"], decoded_ticket["password"]
-            log.info(f"decoded_ticket email: {email}")
-            log.info(f"decoded_ticket password: {password}")
             return SigninForm(email=email, password=password)
         except Exception:
             return None
