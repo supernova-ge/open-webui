@@ -12,6 +12,7 @@ env:
   ECS_CLUSTER: tiny-llm-course
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  WEBUI_SECRET_KEY: ${{ secrets.WEBUI_SECRET_KEY }}
 
 permissions:
   id-token: write
