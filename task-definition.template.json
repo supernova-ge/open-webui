@@ -27,6 +27,10 @@
 				{
 					"name": "OPENAI_API_KEY",
 					"value": "$OPENAI_API_KEY"
+				},
+				{
+					"name": "WEBUI_SECRET_KEY",
+					"value": "$WEBUI_SECRET_KEY"
 				}
 			],
 			"memory": 904,
