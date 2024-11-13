@@ -2,6 +2,11 @@ import re
 import uuid
 import time
 import datetime
+import logging
+from open_webui.env import SRC_LOG_LEVELS
+
+log = logging.getLogger(__name__)
+log.setLevel(SRC_LOG_LEVELS["ROUTERS"])
 
 from open_webui.apps.webui.models.auths import (
     AddUserForm,
@@ -150,11 +155,17 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
     password = form_data.password
 
     ticket = request.headers.get("X-Auth-Ticket")
+    log.info(f"ticket: {ticket}")
     if ticket:
         signinForm = Auths.decode_X_Auth_ticket(ticket)
         if signinForm:
             email = signinForm.email
             password = signinForm.password
+
+    if not validate_email_format(email):
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST, detail=ERROR_MESSAGES.INVALID_EMAIL_FORMAT
+        )
             
     user = Auths.authenticate_user(email, password)
 
