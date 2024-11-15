@@ -53,6 +53,15 @@
 		}
 	};
 
+	const signInHandler = async (ticket) => {
+		const sessionUser = await userSignIn('', '', ticket).catch((error) => {
+			toast.error(error);
+			return null;
+		});
+
+		await setSessionUser(sessionUser);
+	};
+
 	const setupSocket = () => {
 		const _socket = io(`${WEBUI_BASE_URL}` || undefined, {
 			reconnection: true,
@@ -134,6 +143,7 @@
 				: bestMatchingLanguage(languages, browserLanguages, 'en-US');
 			$i18n.changeLanguage(lang);
 		}
+
 		const ticket = $page.url.searchParams.get('ticket');
 
 		if (backendConfig) {
@@ -156,20 +166,12 @@
 						await user.set(sessionUser);
 						await config.set(await getBackendConfig());
 					} else {
-						// Redirect Invalid Session User to /auth Page
 						localStorage.removeItem('token');
-						await goto('/error');
+						if (ticket) {
+							await signInHandler(ticket);
+						}
 					}
 				} else {
-					const signInHandler = async (ticket) => {
-						const sessionUser = await userSignIn('', '', ticket).catch((error) => {
-							toast.error(error);
-							return null;
-						});
-
-						await setSessionUser(sessionUser);
-					};
-
 					if (ticket) {
 						await signInHandler(ticket);
 					}
