@@ -157,7 +157,9 @@
 				if (localStorage.token) {
 					// Get Session User Info
 					const sessionUser = await getSessionUser(localStorage.token, ticket).catch((error) => {
-						toast.error(error);
+						if (!ticket) {
+							toast.error(error);
+						}
 						return null;
 					});
 
