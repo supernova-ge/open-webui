@@ -53,6 +53,12 @@ def decode_token(token: str) -> Optional[dict]:
     except Exception:
         return None
 
+def decode_X_Auth_ticket(ticket: str) -> Optional[dict]:
+    try:
+        decoded_ticket = decode_token(ticket)
+        return decoded_ticket
+    except Exception:
+        return None
 
 def extract_token_from_auth_header(auth_header: str):
     return auth_header[len("Bearer ") :]
@@ -92,6 +98,11 @@ def get_current_user(
 
     # auth by jwt token
     data = decode_token(token)
+    ticket = request.headers.get("X-Auth-Ticket")
+
+    if ticket:
+        ticket = decode_X_Auth_ticket(ticket)
+
     if data is not None and "id" in data:
         user = Users.get_user_by_id(data["id"])
         if user is None:
@@ -101,6 +112,13 @@ def get_current_user(
             )
         else:
             Users.update_user_last_active_by_id(user.id)
+
+        if ticket and "email" in ticket:
+            if user.email != ticket["email"]:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail=ERROR_MESSAGES.INVALID_TOKEN,
+                )
         return user
     else:
         raise HTTPException(

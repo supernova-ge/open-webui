@@ -137,17 +137,6 @@ class AuthsTable:
                     return None
         except Exception:
             return None
-    
-    def decode_X_Auth_ticket(self, ticket: str) -> Optional[SigninForm]:
-        try:
-            log.info(f"Decoding ticket")
-            decoded_ticket = decode_token(ticket)
-            email, password = decoded_ticket["email"], decoded_ticket["password"]
-            log.info(f"Decoded email: {email}")
-            return email, password
-        except Exception:
-            log.error(f"Error decoding ticket")
-            return None
 
     def authenticate_user_by_api_key(self, api_key: str) -> Optional[UserModel]:
         log.info(f"authenticate_user_by_api_key: {api_key}")

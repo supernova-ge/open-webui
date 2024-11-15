@@ -1,13 +1,14 @@
 import { WEBUI_API_BASE_URL } from '$lib/constants';
 
-export const getSessionUser = async (token: string) => {
+export const getSessionUser = async (token: string, ticket: string = '') => {
 	let error = null;
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`
+			Authorization: `Bearer ${token}`,
+			'X-Auth-Ticket': ticket
 		},
 		credentials: 'include'
 	})
@@ -28,7 +29,7 @@ export const getSessionUser = async (token: string) => {
 	return res;
 };
 
-export const userSignIn = async (email: string, password: string, ticket: string) => {
+export const userSignIn = async (email: string, password: string, ticket: string = '') => {
 	let error = null;
 
 	const res = await fetch(`${WEBUI_API_BASE_URL}/auths/signin`, {

@@ -134,6 +134,7 @@
 				: bestMatchingLanguage(languages, browserLanguages, 'en-US');
 			$i18n.changeLanguage(lang);
 		}
+		const ticket = $page.url.searchParams.get('ticket');
 
 		if (backendConfig) {
 			// Save Backend Status to Store
@@ -145,7 +146,7 @@
 
 				if (localStorage.token) {
 					// Get Session User Info
-					const sessionUser = await getSessionUser(localStorage.token).catch((error) => {
+					const sessionUser = await getSessionUser(localStorage.token, ticket).catch((error) => {
 						toast.error(error);
 						return null;
 					});
@@ -168,7 +169,6 @@
 
 						await setSessionUser(sessionUser);
 					};
-					const ticket = $page.url.searchParams.get('ticket');
 
 					if (ticket) {
 						await signInHandler(ticket);

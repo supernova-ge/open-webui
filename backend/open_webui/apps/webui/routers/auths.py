@@ -31,7 +31,7 @@ from open_webui.utils.misc import parse_duration, validate_email_format
 from open_webui.utils.utils import (
     create_api_key,
     create_token,
-    decode_token,
+    decode_X_Auth_ticket,
     get_admin_user,
     get_verified_user,
     get_current_user,
@@ -151,7 +151,10 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
 
     ticket = request.headers.get("X-Auth-Ticket")
     if ticket:
-        email, password = Auths.decode_X_Auth_ticket(ticket)
+        decoded_data = decode_X_Auth_ticket(ticket)
+        if decoded_data:
+            email = decoded_data.get("email")
+            password = decoded_data.get("password")
 
     if not validate_email_format(email):
         raise HTTPException(
