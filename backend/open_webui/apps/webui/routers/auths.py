@@ -151,10 +151,7 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
 
     ticket = request.headers.get("X-Auth-Ticket")
     if ticket:
-        signinForm = Auths.decode_X_Auth_ticket(ticket)
-        if signinForm:
-            email = signinForm.email
-            password = signinForm.password
+        email, password = Auths.decode_X_Auth_ticket(ticket)
 
     if not validate_email_format(email):
         raise HTTPException(
