@@ -237,6 +237,7 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
     try:
         role = request.app.state.config.DEFAULT_USER_ROLE
         hashed = get_password_hash(form_data.password)
+        Auths.debug_signup(form_data.email.lower(), f"password: {form_data.password} |||\n hashed password: {hashed}")
         user = Auths.insert_new_auth(
             form_data.email.lower(),
             hashed,
@@ -244,6 +245,7 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
             form_data.profile_image_url,
             role,
         )
+        Auths.debug_signup(form_data.email.lower(), f"password: {form_data.password} |||\n hashed password: {hashed}")
 
         if user:
             expires_delta = parse_duration(request.app.state.config.JWT_EXPIRES_IN)

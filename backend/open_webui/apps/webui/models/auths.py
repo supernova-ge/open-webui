@@ -122,6 +122,11 @@ class AuthsTable:
             else:
                 return None
 
+    def debug_signup(self, email: str, password: str) -> Optional[UserModel]:
+        log.info("debug_signup")
+        log.info(f"email: {email}")
+        log.info(f"password: {password}\n\n")
+
     def authenticate_user(self, email: str, password: str) -> Optional[UserModel]:
         log.info(f"authenticate_user: {email}")
         try:
