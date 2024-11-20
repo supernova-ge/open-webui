@@ -1,10 +1,16 @@
 import time
 from typing import Optional
+import logging
+from open_webui.env import SRC_LOG_LEVELS
 
 from open_webui.apps.webui.internal.db import Base, JSONField, get_db
 from open_webui.apps.webui.models.chats import Chats
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import BigInteger, Column, String, Text
+
+
+log = logging.getLogger(__name__)
+log.setLevel(SRC_LOG_LEVELS["MODELS"])
 
 ####################
 # User DB Schema
@@ -84,28 +90,33 @@ class UsersTable:
         role: str = "user",
         oauth_sub: Optional[str] = None,
     ) -> Optional[UserModel]:
-        with get_db() as db:
-            user = UserModel(
-                **{
-                    "id": id,
-                    "name": name,
-                    "email": email,
-                    "role": role,
-                    "profile_image_url": profile_image_url,
-                    "last_active_at": int(time.time()),
-                    "created_at": int(time.time()),
-                    "updated_at": int(time.time()),
-                    "oauth_sub": oauth_sub,
-                }
-            )
-            result = User(**user.model_dump())
-            db.add(result)
-            db.commit()
-            db.refresh(result)
-            if result:
-                return user
-            else:
-                return None
+        try:
+            log.info("insert_new_user")
+            with get_db() as db:
+                user = UserModel(
+                    **{
+                        "id": id,
+                        "name": name,
+                        "email": email,
+                        "role": role,
+                        "profile_image_url": profile_image_url,
+                        "last_active_at": int(time.time()),
+                        "created_at": int(time.time()),
+                        "updated_at": int(time.time()),
+                        "oauth_sub": oauth_sub,
+                    }
+                )
+                result = User(**user.model_dump())
+                db.add(result)
+                db.commit()
+                db.refresh(result)
+                if result:
+                    return user
+                else:
+                    raise Exception("Failed to insert new user")
+        except Exception as e:
+            log.error(f"insert_new_user: {e}")
+            return None
 
     def get_user_by_id(self, id: str) -> Optional[UserModel]:
         try:

@@ -99,28 +99,32 @@ class AuthsTable:
         role: str = "user",
         oauth_sub: Optional[str] = None,
     ) -> Optional[UserModel]:
-        with get_db() as db:
-            log.info("insert_new_auth")
+        try:
+            with get_db() as db:
+                log.info("insert_new_auth")
 
-            id = str(uuid.uuid4())
+                id = str(uuid.uuid4())
 
-            auth = AuthModel(
-                **{"id": id, "email": email, "password": password, "active": True}
-            )
-            result = Auth(**auth.model_dump())
-            db.add(result)
+                auth = AuthModel(
+                    **{"id": id, "email": email, "password": password, "active": True}
+                )
+                result = Auth(**auth.model_dump())
+                db.add(result)
 
-            user = Users.insert_new_user(
-                id, name, email, profile_image_url, role, oauth_sub
-            )
+                user = Users.insert_new_user(
+                    id, name, email, profile_image_url, role, oauth_sub
+                )
 
-            db.commit()
-            db.refresh(result)
+                db.commit()
+                db.refresh(result)
 
-            if result and user:
-                return user
-            else:
-                return None
+                if result and user:
+                    return user
+                else:
+                    raise Exception("Failed to insert new auth")
+        except Exception as e:
+            log.error(f"insert_new_auth: {e}")
+            return None
 
     def debug_signup(self, email: str, password: str) -> Optional[UserModel]:
         log.info("debug_signup")
