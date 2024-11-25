@@ -68,7 +68,7 @@
 						/>
 					</svg>
 				</div>
-				<div class=" self-center">{$i18n.t('Settings')}</div>
+				<div class=" self-center truncate">{$i18n.t('Settings')}</div>
 			</button>
 
 			<button
@@ -85,7 +85,7 @@
 				<div class=" self-center mr-3">
 					<ArchiveBox className="size-5" strokeWidth="1.5" />
 				</div>
-				<div class=" self-center">{$i18n.t('Archived Chats')}</div>
+				<div class=" self-center truncate">{$i18n.t('Archived Chats')}</div>
 			</button>
 
 			<hr class=" border-gray-50 dark:border-gray-850 my-1 p-0" />

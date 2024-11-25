@@ -17,10 +17,12 @@
 		user as _user,
 		showControls
 	} from '$lib/stores';
+
 	import { blobToFile, findWordIndices } from '$lib/utils';
 	import { uploadFile } from '$lib/apis/files';
+	import { getTools } from '$lib/apis/tools';
 
-	import { WEBUI_BASE_URL, WEBUI_API_BASE_URL } from '$lib/constants';
+	import { WEBUI_BASE_URL, WEBUI_API_BASE_URL, PASTED_TEXT_CHARACTER_LIMIT } from '$lib/constants';
 
 	import Tooltip from '../common/Tooltip.svelte';
 	import InputMenu from './MessageInput/InputMenu.svelte';
@@ -46,10 +48,11 @@
 
 	export let prompt = '';
 	export let files = [];
-	export let availableToolIds = [];
+
 	export let selectedToolIds = [];
 	export let webSearchEnabled = false;
 
+	let loaded = false;
 	let recording = false;
 
 	let chatInputContainerElement;
@@ -69,14 +72,6 @@
 		(model) => $models.find((m) => m.id === model)?.info?.meta?.capabilities?.vision ?? true
 	);
 
-	$: if (prompt) {
-		if (chatInputContainerElement) {
-			chatInputContainerElement.style.height = '';
-			chatInputContainerElement.style.height =
-				Math.min(chatInputContainerElement.scrollHeight, 200) + 'px';
-		}
-	}
-
 	const scrollToBottom = () => {
 		const element = document.getElementById('messages-container');
 		element.scrollTo({
@@ -85,7 +80,12 @@
 		});
 	};
 
-	const uploadFileHandler = async (file) => {
+	const uploadFileHandler = async (file, fullContext: boolean = false) => {
+		if ($_user?.role !== 'admin' && !($_user?.permissions?.chat?.file_upload ?? true)) {
+			toast.error($i18n.t('You do not have permission to upload files.'));
+			return null;
+		}
+
 		console.log(file);
 
 		const tempItemId = uuidv4();
@@ -99,7 +99,8 @@
 			status: 'uploading',
 			size: file.size,
 			error: '',
-			itemId: tempItemId
+			itemId: tempItemId,
+			...(fullContext ? { context: 'full' } : {})
 		};
 
 		if (fileItem.size == 0) {
@@ -209,7 +210,9 @@
 		dragged = false;
 	};
 
-	onMount(() => {
+	onMount(async () => {
+		loaded = true;
+
 		window.setTimeout(() => {
 			const chatInput = document.getElementById('chat-input');
 			chatInput?.focus();
@@ -217,90 +220,63 @@
 
 		window.addEventListener('keydown', handleKeyDown);
 
-		const dropZone = document.getElementById('chat-container');
+		await tick();
 
-		dropZone?.addEventListener('dragover', onDragOver);
-		dropZone?.addEventListener('drop', onDrop);
-		dropZone?.addEventListener('dragleave', onDragLeave);
+		const dropzoneElement = document.getElementById('chat-container');
+
+		dropzoneElement?.addEventListener('dragover', onDragOver);
+		dropzoneElement?.addEventListener('drop', onDrop);
+		dropzoneElement?.addEventListener('dragleave', onDragLeave);
 	});
 
 	onDestroy(() => {
+		console.log('destroy');
 		window.removeEventListener('keydown', handleKeyDown);
 
-		const dropZone = document.getElementById('chat-container');
+		const dropzoneElement = document.getElementById('chat-container');
 
-		dropZone?.removeEventListener('dragover', onDragOver);
-		dropZone?.removeEventListener('drop', onDrop);
-		dropZone?.removeEventListener('dragleave', onDragLeave);
+		if (dropzoneElement) {
+			dropzoneElement?.removeEventListener('dragover', onDragOver);
+			dropzoneElement?.removeEventListener('drop', onDrop);
+			dropzoneElement?.removeEventListener('dragleave', onDragLeave);
+		}
 	});
 </script>
 
 <FilesOverlay show={dragged} />
 
-<div class="w-full font-primary">
-	<div class=" -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center">
-		<div class="flex flex-col px-2.5 max-w-6xl w-full">
-			<div class="relative">
-				{#if autoScroll === false && history?.currentId}
-					<div
-						class=" absolute -top-12 left-0 right-0 flex justify-center z-30 pointer-events-none"
-					>
-						<button
-							class=" bg-white border border-gray-100 dark:border-none dark:bg-white/20 p-1.5 rounded-full pointer-events-auto"
-							on:click={() => {
-								autoScroll = true;
-								scrollToBottom();
-							}}
+{#if loaded}
+	<div class="w-full font-primary">
+		<div class=" -mb-0.5 mx-auto inset-x-0 bg-transparent flex justify-center">
+			<div class="flex flex-col px-2.5 max-w-6xl w-full">
+				<div class="relative">
+					{#if autoScroll === false && history?.currentId}
+						<div
+							class=" absolute -top-12 left-0 right-0 flex justify-center z-30 pointer-events-none"
 						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-								class="w-5 h-5"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-						</button>
-					</div>
-				{/if}
-			</div>
-
-			<div class="w-full relative">
-				{#if atSelectedModel !== undefined}
-					<div
-						class="px-3 py-1 text-left w-full flex justify-between items-center absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white dark:from-gray-900 z-10"
-					>
-						<div class="flex items-center gap-2 text-sm dark:text-gray-500">
-							<img
-								crossorigin="anonymous"
-								alt="model profile"
-								class="size-4 max-w-[28px] object-cover rounded-full"
-								src={$models.find((model) => model.id === atSelectedModel.id)?.info?.meta
-									?.profile_image_url ??
-									($i18n.language === 'dg-DG'
-										? `/doge.png`
-										: `${WEBUI_BASE_URL}/static/favicon.png`)}
-							/>
-							<div>
-								Talking to <span class=" font-medium">{atSelectedModel.name}</span>
-							</div>
-						</div>
-						<div>
 							<button
-								class="flex items-center"
+								class=" bg-white border border-gray-100 dark:border-none dark:bg-white/20 p-1.5 rounded-full pointer-events-auto"
 								on:click={() => {
-									atSelectedModel = undefined;
+									autoScroll = true;
+									scrollToBottom();
 								}}
 							>
-								<XMark />
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 20 20"
+									fill="currentColor"
+									class="w-5 h-5"
+								>
+									<path
+										fill-rule="evenodd"
+										d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"
+										clip-rule="evenodd"
+									/>
+								</svg>
 							</button>
 						</div>
-					</div>
-				{/if}
+					{/if}
+				</div>
 
 				<Commands
 					bind:this={commandsElement}
@@ -881,4 +857,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+{/if}
