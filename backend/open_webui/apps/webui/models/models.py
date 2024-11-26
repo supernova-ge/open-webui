@@ -136,7 +136,9 @@ class ModelsTable:
 
     def get_all_models(self) -> list[ModelModel]:
         with get_db() as db:
-            return [ModelModel.model_validate(model) for model in db.query(Model).all()]
+            models = [ModelModel.model_validate(model) for model in db.query(Model).all()]
+            sorted_models = sorted(models, key=lambda model: model.id != "rag.ailab-pipeline" )
+            return sorted_models
 
     def get_model_by_id(self, id: str) -> Optional[ModelModel]:
         try:
