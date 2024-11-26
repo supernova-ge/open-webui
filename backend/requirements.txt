@@ -38,8 +38,8 @@ tiktoken
 langchain==0.2.15
 langchain-community==0.2.12
 langchain-chroma==0.1.4
-langchain_openai==0.2.9
-langgraph==0.2.53
+langchain_openai
+langgraph
 
 fake-useragent==1.5.1
 chromadb==0.5.9
