@@ -942,7 +942,7 @@ async def get_all_models():
     open_webui_models = await get_open_webui_models()
 
     models = open_webui_models + openai_models + ollama_models
-
+    log.info(f"Models: {models}")
     # If there are no models, return an empty list
     if len([model for model in models if model["owned_by"] != "arena"]) == 0:
         return []
@@ -956,6 +956,7 @@ async def get_all_models():
     ]
 
     custom_models = Models.get_all_models()
+    log.info(f"Custom models: {custom_models}")
     for custom_model in custom_models:
         if custom_model.base_model_id is None:
             for model in models:
