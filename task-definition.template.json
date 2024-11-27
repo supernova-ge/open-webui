@@ -2,7 +2,9 @@
 	"family": "widget-$APP_ENV",
 	"taskRoleArn": "arn:aws:iam::891377043594:role/ecsTaskRole",
 	"executionRoleArn": "arn:aws:iam::891377043594:role/ecsTaskExecutionRole",
-	"requiresCompatibilities": ["EC2"],
+	"requiresCompatibilities": [
+		"EC2"
+	],
 	"containerDefinitions": [
 		{
 			"name": "widget-$APP_ENV",
@@ -10,8 +12,8 @@
 			"essential": true,
 			"portMappings": [
 				{
-					"containerPort": 3000,
-					"hostPort": 3000,
+					"containerPort": 8080,
+					"hostPort": 8080,
 					"protocol": "tcp"
 				}
 			],
