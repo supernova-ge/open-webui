@@ -5,7 +5,7 @@ cd "$SCRIPT_DIR" || exit
 
 KEY_FILE=.webui_secret_key
 
-PORT="${PORT:-3000}"
+PORT="${PORT:-8080}"
 HOST="${HOST:-0.0.0.0}"
 
 DATABASE_POOL_SIZE=5
@@ -64,4 +64,4 @@ if [ -n "$SPACE_ID" ]; then
   export WEBUI_URL=${SPACE_HOST}
 fi
 
-exec uvicorn open_webui.main:app --host $HOST --port $PORT --forwarded-allow-ips '*'
+WEBUI_SECRET_KEY="$WEBUI_SECRET_KEY" exec uvicorn open_webui.main:app --host $HOST --port $PORT --forwarded-allow-ips '*'

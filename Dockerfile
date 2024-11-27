@@ -47,7 +47,7 @@ ARG GID
 
 ## Basis ##
 ENV ENV=prod \
-    PORT=3000 \
+    PORT=8080 \
     # pass build args to the build
     USE_OLLAMA_DOCKER=${USE_OLLAMA} \
     USE_CUDA_DOCKER=${USE_CUDA} \
@@ -163,7 +163,7 @@ COPY --chown=$UID:$GID --from=build /app/package.json /app/package.json
 # copy backend files
 COPY --chown=$UID:$GID ./backend .
 
-EXPOSE 3000
+EXPOSE 8080
 
 USER $UID:$GID
 
