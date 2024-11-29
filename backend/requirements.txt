@@ -38,6 +38,7 @@ tiktoken
 langchain
 langchain-community
 langchain-chroma==0.1.4
+pinecone
 
 langgraph==0.2.53
 langchain-openai==0.2.10
